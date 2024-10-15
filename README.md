@@ -8,8 +8,8 @@ This project is a Laravel-based RESTful API designed to manage order system , pa
 - [Configuration](#configuration)
 - [Database Setup](#database-setup)
 - [Postman Collection](#postman-collection)
-- [Payment Setup](#Payment Setup)
-- [Unit Test Setup](#Unit Test Setup)
+- [Payment Setup](#Payment-Setup)
+- [Unit Test Setup](#Unit-Test-Setup)
 
 ## Installation
 
@@ -89,7 +89,10 @@ This project is a Laravel-based RESTful API designed to manage order system , pa
     php artisan l5-swagger:generate
     ```
    then go to link {{host}}/api/documentation
+
+
 ## Payment Setup
+
 1. **Payment Configuration:**
 
    Set up your stripe payment keys configuration in the `.env` file:
@@ -100,6 +103,7 @@ This project is a Laravel-based RESTful API designed to manage order system , pa
     STRIPE_WEBHOOK_SECRET={WEBHOOK_KEY}
     ```
 ## Unit Test Setup
+
 1. **Unit test Configuration:**
 
 Set up your database and stripe payment keys in the `phpunit.xml` file:
