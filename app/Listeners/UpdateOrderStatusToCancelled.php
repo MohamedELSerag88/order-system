@@ -14,7 +14,7 @@ class UpdateOrderStatusToCancelled
     public function handle(PaymentSucceeded $event)
     {
         $order = $event->order;
-        $order->status = 'Paid';
+        $order->status = 'Canceled';
         $order->save();
     }
 }
