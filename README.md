@@ -54,12 +54,7 @@ This project is a Laravel-based RESTful API designed to manage order system , pa
     DB_USERNAME=root
     DB_PASSWORD=
     ```
-3. **Generate Api documentation:**
 
-    ```bash
-    php artisan l5-swagger:generate
-    ```
-    then go to link {{host}}/api/documentation
 
 ## Database Setup
 
@@ -87,6 +82,13 @@ This project is a Laravel-based RESTful API designed to manage order system , pa
    env file: Order System.postman_environment.json
 
     ```
+
+2. **Generate Api documentation:**
+
+    ```bash
+    php artisan l5-swagger:generate
+    ```
+   then go to link {{host}}/api/documentation
 ## Payment Setup
 1. **Payment Configuration:**
 
