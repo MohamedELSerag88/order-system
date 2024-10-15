@@ -8,6 +8,8 @@ This project is a Laravel-based RESTful API designed to manage order system , pa
 - [Configuration](#configuration)
 - [Database Setup](#database-setup)
 - [Postman Collection](#postman-collection)
+- [Payment Setup](#Payment Setup)
+- [Unit Test Setup](#Unit Test Setup)
 
 ## Installation
 
