@@ -21,4 +21,10 @@ Route::group([
 ], function ($router) {
     Route::post('login', 'Auth\AuthController@login');
     Route::post('register', 'Auth\AuthController@register');
+    Route::post('payment', 'Order\PaymentController@payment');
+    Route::group([
+        'middleware' => 'auth'
+    ], function ($router) {
+        Route::apiResource("orders", "Order\OrderController")->only(["index","store","update"]);
+    });
 });

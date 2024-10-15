@@ -10,6 +10,17 @@ class Order extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'product_name',
+        'unit_price',
+        'quantity',
+        'total',
+        'status',
+        'user_id'
+    ];
+
+    public $search = ["product_name"];
+
     protected static function newFactory()
     {
         return OrderFactory::new();

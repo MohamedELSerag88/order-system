@@ -102,7 +102,7 @@ class Response extends \Illuminate\Http\JsonResponse {
 		return $this->statusCode(static::OK, $data, $status, $headers);
 	}
 
-	public function statusFail($data = array(), $status = 200, array $headers = array()) {
+	public function statusFail($data = array(), $status =200, array $headers = array()) {
 		$this->metaBag['status'] = static::FAILED;
 		return $this->statusCode(static::FAILED, $data, $status, $headers);
 	}

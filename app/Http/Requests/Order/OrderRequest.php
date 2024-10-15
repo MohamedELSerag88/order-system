@@ -23,7 +23,7 @@ class OrderRequest extends FormRequest
     {
         return [
             "product_name" => "required",
-            "unit_price" => "required|float",
+            "unit_price" => "required",
             "quantity" => "required|integer",
         ];
     }

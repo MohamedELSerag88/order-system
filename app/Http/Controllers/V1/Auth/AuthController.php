@@ -5,7 +5,7 @@ namespace App\Http\Controllers\V1\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
-use App\Http\Resources\LoginResource;
+use App\Http\Resources\Auth\LoginResource;
 use App\Models\User;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
