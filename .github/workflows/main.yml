@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1' # Specify your PHP version
+          extensions: mbstring, xml, curl, gd, bcmath, sqlite3, mysqli
+
+      - name: Install Composer dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest --optimize-autoloader
+
+      - name: Run Migration
+        run: php artisan migrate
+
+      - name: Run Tests
+        run: php artisan test
+
+      - name: Cache Config
+        run: php artisan config:cache
+
+      - name: Cache Routes
+        run: php artisan route:cache
