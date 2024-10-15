@@ -16,7 +16,8 @@ class Order extends Model
         'quantity',
         'total',
         'status',
-        'user_id'
+        'user_id',
+        'payment_url'
     ];
 
     public $search = ["product_name"];

@@ -12,3 +12,9 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+Route::get('/payment', function () {
+    $order = \App\Models\Order::first();
+    event(new \App\Events\PaymentSucceeded($order));
+    return view('payment');
+})->name('payment.result');

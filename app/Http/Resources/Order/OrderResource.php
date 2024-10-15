@@ -21,6 +21,7 @@ class OrderResource extends JsonResource
             "quantity" => $this->quantity,
             "total" => $this->total,
             "status" => $this->status,
+            'payment_url' =>$this->payment_url,
             "date" => $this->created_at->format('d M,Y H:i'),
         ];
     }

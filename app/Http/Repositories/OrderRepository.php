@@ -51,8 +51,9 @@ class OrderRepository implements BaseRepositoryInterface
             $paymentDetails = $data["payment_details"];
             unset($data["payment_details"]);
             $order = Order::create($data);
-//            $stripe = new StripeHelper();
-//            $stripe->charge($order, $paymentDetails);
+            $stripe = new StripeHelper();
+            $payment_url = $stripe->checkout($order, $paymentDetails);
+            $order->payment_url = $payment_url;
             \DB::commit();
             return $this->response->statusOk(["data" =>new OrderResource($order)]);
         }

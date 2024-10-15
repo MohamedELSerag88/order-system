@@ -1,51 +1,30 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Stripe Payment</title>
-    <script src="https://js.stripe.com/v3/"></script>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+    <link href='https://fonts.googleapis.com/css?family=Lato:300,400|Montserrat:700' rel='stylesheet' type='text/css'>
+    <style>
+        @import url(//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.1/normalize.min.css);
+        @import url(//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css);
+    </style>
+    <link rel="stylesheet" href="https://2-22-4-dot-lead-pages.appspot.com/static/lp918/min/default_thank_you.css">
+    <script src="https://2-22-4-dot-lead-pages.appspot.com/static/lp918/min/jquery-1.9.1.min.js"></script>
+    <script src="https://2-22-4-dot-lead-pages.appspot.com/static/lp918/min/html5shiv.js"></script>
 </head>
 <body>
-<form id="payment-form">
-    <div id="card-element"></div>
-    <button id="submit">Pay</button>
-    <div id="payment-result"></div>
-</form>
+<header class="site-header" id="header">
+    <h1 class="site-header__title" data-lead-id="site-header-title">PAYMENT DONE!</h1>
+</header>
 
-<script>
-    const stripe = Stripe("pk_test_51KRL3HDkjUGwfEHHOt7AwO5bwzjMhIOIHY1UVWtF6z18QVr7nBIr7Pc2aRw7pgghL4YE69INcIcI00jI29jZ0CAA007CnOBvUu");
-    const elements = stripe.elements();
-    const cardElement = elements.create('card');
-    cardElement.mount('#card-element');
+<div class="main-content">
+    <i class="fa fa-check main-content__checkmark" id="checkmark"></i>
+    <p class="main-content__body" data-lead-id="main-content-body"></p>
+</div>
 
-    const form = document.getElementById('payment-form');
-    form.addEventListener('submit', async (event) => {
-        event.preventDefault();
-
-        const { paymentMethod, error } = await stripe.createPaymentMethod({
-            type: 'card',
-            card: cardElement,
-        });
-
-        if (error) {
-            document.getElementById('payment-result').innerText = error.message;
-        } else {
-            // Send the token to your server
-            const response = await fetch('/api/v1/payment', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    stripeToken: paymentMethod.id,
-                    amount: 10,
-                }),
-            });
-
-            const result = await response.json();
-            document.getElementById('payment-result').innerText = result.status;
-        }
-    });
-</script>
+<footer class="site-footer" id="footer">
+    <p class="site-footer__fineprint" id="fineprint">Copyright ©2014 | All Rights Reserved</p>
+</footer>
 </body>
 </html>
