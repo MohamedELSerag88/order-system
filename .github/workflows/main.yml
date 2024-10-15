@@ -37,7 +37,7 @@ jobs:
           extensions: mbstring, xml, curl, gd, bcmath, sqlite3, mysqli
 
       - name: Install Composer dependencies
-        run: composer install --prefer-dist --no-progress --no-suggest --optimize-autoloader
+        run: composer install
 
       - name: Set up Laravel environment variables
         run: |
