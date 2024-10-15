@@ -81,6 +81,8 @@ This project is a Laravel-based RESTful API designed to manage order system , pa
 
     ```
    can find postman collection file inside base directroy of the project 
+   file name : Order System.postman_collection.json
+   env file: Order System.postman_environment.json
 
     ```
 ## Payment Setup
