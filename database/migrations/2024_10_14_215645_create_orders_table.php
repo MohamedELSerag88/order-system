@@ -17,6 +17,7 @@ return new class extends Migration
             $table->integer("quantity");
             $table->decimal("unit_price");
             $table->decimal("total");
+            $table->string("payment_id")->nullable();
             $table->text("payment_url")->nullable();
             $table->enum("status", ["Pending",  "Paid", "Canceled"])->default("Pending");
             $table->unsignedBigInteger("user_id");

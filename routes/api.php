@@ -21,7 +21,8 @@ Route::group([
 ], function ($router) {
     Route::post('login', 'Auth\AuthController@login');
     Route::post('register', 'Auth\AuthController@register');
-    Route::post('payment', 'Order\PaymentController@payment');
+    Route::post('webhook/stripe', 'Order\PaymentController@paymentWebhook');
+    Route::get('/payment-completed', 'Order\PaymentController@paymentCompleted')->name('payment.result');
     Route::group([
         'middleware' => 'auth'
     ], function ($router) {

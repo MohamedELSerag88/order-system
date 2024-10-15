@@ -2,7 +2,12 @@
 
 namespace App\Exceptions;
 
+use App\Http\Response\Response;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Support\ValidatedInput;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -44,5 +49,23 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    public function render($request, Throwable $e)
+    {
+        if ($request->wantsJson()) {
+            $response = new Response();
+            if ($e instanceof AccessDeniedHttpException || $e instanceof AuthorizationException) {
+                return $response->unauthorized('You do not have permission to access this resource');
+            }
+
+            if ($e instanceof ModelNotFoundException) {
+                return $response->notFound('Resource not found');
+            }
+            if($e instanceof ValidatedInput)
+            return $response->statusFail($e->getMessage());
+        }
+
+        return parent::render($request, $e);
     }
 }

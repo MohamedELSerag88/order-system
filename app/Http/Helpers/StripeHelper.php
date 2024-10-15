@@ -1,9 +1,13 @@
 <?php
 
 namespace App\Http\Helpers;
+use App\Events\PaymentCancelled;
+use App\Events\PaymentFailed;
 use Illuminate\Support\Facades\URL;
 use Stripe\StripeClient;
 use Stripe\Charge;
+use App\Events\PaymentSucceeded;
+use App\Models\Order;
 class StripeHelper
 {
     private $stripe;
@@ -12,11 +16,11 @@ class StripeHelper
         $this->stripe = new StripeClient(env('STRIPE_SK'));
     }
 
-    public function checkout($order , $paymentDetails)
+    public function checkout($order )
     {
-        $checkout_session = $this->stripe->checkout->sessions->create([
+        return $this->stripe->checkout->sessions->create([
             "mode" => "payment",
-            "success_url" => route("payment.result"),
+            "success_url" => route("payment.result", ['order_id' => $order->id]),
             "cancel_url" =>  URL::to("/"),
             "locale" => "auto",
             "line_items" => [
@@ -30,33 +34,42 @@ class StripeHelper
                         ]
                     ]
                 ]
-            ]
+            ],
+            'metadata' => [
+                'order_id' => $order->id
+            ],
         ]);
-        return $checkout_session->url;
     }
 
-    public function webhookPayment($request)
-    {
+    public static function webhook($request){
         $payload = $request->getContent();
         $signature = $request->header('Stripe-Signature');
         $endpoint_secret = env('STRIPE_WEBHOOK_SECRET');
-
-        try {
-            $event = $this->stripe->webhookEndpoints->create($payload, $signature, $endpoint_secret);
+        $event = \Stripe\Webhook::constructEvent(
+            $payload, $signature, $endpoint_secret
+        );
+        $order = Order::first($event->metadata->order_id);
+        if($order){
             switch ($event->type) {
-                case 'payment_intent.succeeded':
-                    $order = \App\Models\Order::first();
-                    event(new \App\Events\PaymentSucceeded($order));
+                case 'charge.updated':
+                    if($event->paid)
+                        event(new PaymentSucceeded($order));
+                    else
+                        event(new PaymentCancelled($order));
                     break;
-                case 'payment_intent.payment_failed':
+                case 'charge.failed':
+                    event(new PaymentCancelled($order));
+                    break;
+                case 'checkout.session.completed':
+                case 'charge.succeeded' :
+                    event(new PaymentSucceeded($order));
                     break;
             }
+            return true;
+        }
 
-            return response()->json(['status' => 'success']);
-        } catch (\UnexpectedValueException $e) {
-            return response()->json(['status' => 'invalid payload'], 400);
-        } catch (\Stripe\Exception\SignatureVerificationException $e) {
-            return response()->json(['status' => 'invalid signature'], 400);
+        else{
+            return false;
         }
     }
 

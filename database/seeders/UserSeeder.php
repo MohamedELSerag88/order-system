@@ -15,13 +15,20 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        //
 
-//        \DB::table('users')->truncate();
         User::create([
             'name' => "User",
             'email' => "user@order.com",
             'password' => \Hash::make("123456")
         ]);
+        $admin = User::create([
+            'name' => "Admin",
+            'email' => "admin@order.com",
+            'password' => \Hash::make("123456")
+        ]);
+        $role = \Spatie\Permission\Models\Role::create(['name' => 'admin']);
+        $permission = \Spatie\Permission\Models\Permission::create(['name' => 'update orders']);
+        $role->givePermissionTo('update orders');
+        $admin->assignRole('admin');
     }
 }

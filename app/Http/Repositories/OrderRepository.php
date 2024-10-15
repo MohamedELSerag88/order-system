@@ -24,6 +24,12 @@ class OrderRepository implements BaseRepositoryInterface
         $this->response = $response;
     }
 
+    public function find($id)
+    {
+        $order = Order::find($id);
+        return $order;
+    }
+
     public function all()
     {
         $orders = app(Pipeline::class)
@@ -48,12 +54,12 @@ class OrderRepository implements BaseRepositoryInterface
             $data["total"] = $data['unit_price'] * $data['quantity'];
             $data["status"] = "Pending";
             $data["user_id"] = auth()->id();
-            $paymentDetails = $data["payment_details"];
-            unset($data["payment_details"]);
             $order = Order::create($data);
             $stripe = new StripeHelper();
-            $payment_url = $stripe->checkout($order, $paymentDetails);
-            $order->payment_url = $payment_url;
+            $payment = $stripe->checkout($order);
+            $order->payment_url = $payment->url;
+            $order->payment_id = $payment->id;
+            $order->save();
             \DB::commit();
             return $this->response->statusOk(["data" =>new OrderResource($order)]);
         }
@@ -66,7 +72,19 @@ class OrderRepository implements BaseRepositoryInterface
 
     public function update(array $data, $id)
     {
+        $data["total"] = $data['unit_price'] * $data['quantity'];
+        try {
+            \DB::beginTransaction();
+            Order::where("id",$id)->update($data);
+            \DB::commit();
+            return $this->response->statusOk("Order updated successfully");
+        }
+        catch (\Exception $exception){
+            \DB::rollback();
+            return $this->response->statusFail( $exception->getMessage());
+        }
     }
+
 
 
 }

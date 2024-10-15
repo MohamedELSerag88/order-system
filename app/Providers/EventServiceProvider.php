@@ -21,6 +21,12 @@ class EventServiceProvider extends ServiceProvider
         \App\Events\PaymentSucceeded::class => [
             \App\Listeners\UpdateOrderStatusToPaid::class,
         ],
+        \App\Events\PaymentFailed::class => [
+            \App\Listeners\UpdateOrderStatusToCancelled::class,
+        ],
+        \App\Events\PaymentCancelled::class => [
+            \App\Listeners\UpdateOrderStatusToCancelled::class,
+        ],
     ];
 
     /**

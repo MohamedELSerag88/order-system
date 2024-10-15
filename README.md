@@ -83,3 +83,35 @@ This project is a Laravel-based RESTful API designed to manage order system , pa
    can find postman collection file inside base directroy of the project 
 
     ```
+## Payment Setup
+1. **Payment Configuration:**
+
+   Set up your stripe payment keys configuration in the `.env` file:
+
+    ```
+    STRIPE_PK={PUBLIC_KEY}
+    STRIPE_SK={SECRET_KEY}
+    STRIPE_WEBHOOK_SECRET={WEBHOOK_KEY}
+    ```
+## Unit Test Setup
+1. **Unit test Configuration:**
+
+Set up your database and stripe payment keys in the `phpunit.xml` file:
+
+    ```
+    <env name="DB_CONNECTION" value="mysql"/>
+     <env name="DB_DATABASE" value="order_system"/>
+     <env name="DB_USERNAME" value="root"/>
+    <env name="DB_PASSWORD" value=""/>
+    <env name="MAIL_MAILER" value="array"/>
+    <env name="QUEUE_CONNECTION" value="sync"/>
+    <env name="SESSION_DRIVER" value="array"/>
+    <env name="TELESCOPE_ENABLED" value="false"/>
+    <env name="JWT_SECRET" value=""/>
+    <env name="STRIPE_PK" value=""/>
+    <env name="STRIPE_SK" value=""/>
+    ```
+2. **Run command:**
+    ```bash
+    php artisan test --coverage-html=coverage/
+    ```

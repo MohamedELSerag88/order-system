@@ -17,6 +17,7 @@ class Order extends Model
         'total',
         'status',
         'user_id',
+        'payment_id',
         'payment_url'
     ];
 
